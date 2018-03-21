@@ -73,3 +73,5 @@ OuDia Onlineは、GNU General Public License(以下『GNU GPL』)が適用され
 * [GNU General Public License V3](https://www.gnu.org/licenses/gpl-3.0.html)
 * [GNU General Public License V3 日本語訳](https://ja.osdn.net/projects/opensource/wiki/licenses%252FGNU_General_Public_License_version_3.0)
 
+## Version
+0.001 

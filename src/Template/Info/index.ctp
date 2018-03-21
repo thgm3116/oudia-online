@@ -98,6 +98,8 @@
                     </li>
                 </ul>
             </p>
+            <h3>Version情報</h3>
+            <p>Version : <?php echo VERSION; ?></p>
         </div>
     </div>
 </div>
