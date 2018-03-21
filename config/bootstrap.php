@@ -218,3 +218,5 @@ if (Configure::read('debug')) {
 Plugin::load('BootstrapUI');
 
 ini_set("max_execution_time",180);
+
+define('VERSION', '0.001');
