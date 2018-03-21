@@ -49,24 +49,13 @@ class DiaController extends AppController
         $TrainTable = TableRegistry::get('Train');
         $dia_group_id = (int)$this->request->param('dia_group_id');
         $distance = $this->request->param('distance');
-        $train_result = $TrainTable->find()
-            ->contain(['dia', 'train_type'])
-            ->where(['dia_group_id' => $dia_group_id, 'distance' => $distance])
-            ->order(['Train.id ASC'])
-            ->all();
+        $train_result = $TrainTable->getTrainsByDiaGroupIdAndDistance($dia_group_id, $distance);
 
         $DiaGroupTable = TableRegistry::get('DiaGroup');
-        $dia_group_result = $DiaGroupTable->find()
-            ->contain('dia_file')
-            ->where(['DiaGroup.id' => $dia_group_id])
-            ->last()
-            ->toArray();
+        $dia_group_result = $DiaGroupTable->getDiaGroup($dia_group_id);
 
         $StationTable = TableRegistry::get('Station');
-        $station_result = $StationTable->find()
-            ->where(['dia_file_id' => $dia_group_result['dia_file_id']])
-            ->all()
-            ->toArray();
+        $station_result = $StationTable->getStations($dia_group_result['dia_file_id']);
 
         $distance_japanese = '下り';
         $opposite_distance = 'nobori';
@@ -107,33 +96,7 @@ class DiaController extends AppController
         $station_id = $this->request->param('station_id');
 
         $DiaTable = TableRegistry::get('dia');
-        $departure_time_condition = null;
-        $dia_result = $DiaTable->find()
-            ->contain(['station', 'train', 'train.train_type'])
-            ->where([
-                'dia.status' => 1,
-                'dia.isLastDia IS NOT ' => 1,
-                // station.statusはとりあえず見なくてもおｋかな・・・？
-                'station.id' => $station_id,
-                'train.dia_group_id' => $dia_group_id,
-                'train.distance' => $distance,
-                'train.status' => 1,
-            ])
-            ->select([
-                'dia.departureTime',
-                'dia.arrivalTime',
-                'dia.type',
-                'dia.isFirstDia',
-                'train.id',
-                'train.identification_id',
-                'train.distance',
-                'train.bikou',
-                'train_type.name',
-                'train_type.shortName',
-                'train_type.timetableColor',
-                'train_type.timetableFont',
-            ])
-            ->all();
+        $dia_result = $DiaTable->getStationTimetable($station_id, $dia_group_id, $distance);
 
         //where IS NOT 空文字 がうまく動かないのでここでフィルタリング
         $filtered_dia_result = [];
@@ -169,7 +132,6 @@ class DiaController extends AppController
 
             $dia_in_hour_array[$i] = $tmp_dia_in_hour;
 
-
             // 後述の要素数補完のため、時間あたりの列車数の最大値を計測して保存する
             $train_number = count($tmp_dia_in_hour);
             if ($train_number > $max_train_number) {
@@ -195,18 +157,10 @@ class DiaController extends AppController
         }
 
         $DiaGroupTable = TableRegistry::get('DiaGroup');
-        $dia_group_result = $DiaGroupTable->find()
-            ->contain('dia_file')
-            ->where(['DiaGroup.id' => $dia_group_id])
-            ->last()
-            ->toArray();
+        $dia_group_result = $DiaGroupTable->getDiaGroup($dia_group_id);
 
         $StationTable = TableRegistry::get('Station');
-        $station_result = $StationTable->find()
-            ->where(['id' => $station_id])
-            ->select(['id', 'name'])
-            ->last()
-            ->toArray();
+        $station_result = $StationTable->getStation($station_id);
 
         $distance_japanese = '下り';
         $opposite_distance = 'nobori';
@@ -247,28 +201,13 @@ class DiaController extends AppController
         $train_id = $this->request->param('train_id');
 
         $TrainTable = TableRegistry::get('train');
-        $train_result = $TrainTable->find()
-            ->contain([
-                'dia',
-                'train_type'
-            ])
-            ->where(['train.id' => $train_id])
-            ->last()
-            ->toArray();
+        $train_result = $TrainTable->getTrainTimetable($train_id);
 
         $DiaGroupTable = TableRegistry::get('DiaGroup');
-        $dia_group_result = $DiaGroupTable->find()
-            ->contain('dia_file')
-            ->where(['DiaGroup.id' => $dia_group_id])
-            ->last()
-            ->toArray();
+        $dia_group_result = $DiaGroupTable->getDiaGroup($dia_group_id);
 
         $StationTable = TableRegistry::get('Station');
-        $station_result = $StationTable->find()
-            ->where(['dia_file_id' => $dia_group_result['dia_file']['id']])
-            ->select(['id', 'name'])
-            ->all()
-            ->toArray();
+        $station_result = $StationTable->getStations($dia_group_result['dia_file']['id']);
 
         $distance_japanese = '下り';
         if ($distance === 'nobori') {

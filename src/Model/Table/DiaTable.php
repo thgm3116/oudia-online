@@ -165,7 +165,53 @@ class DiaTable extends Table
         
         return $this->newEntities($data);
     }
+    
+    /**
+     * 
+     * @param int $station_id
+     * @param int $dia_group_id
+     * @param string $distance
+     * @return mixed
+     */
+    public function getStationTimetable($station_id, $dia_group_id, $distance)
+    {
+        if (empty($station_id) || empty($dia_group_id) || empty($distance)) {
+            return null;
+        }
+        
+        return $this->find()
+            ->contain(['station', 'train', 'train.train_type'])
+            ->where([
+                'dia.status' => 1,
+                'dia.isLastDia IS NOT ' => 1,
+                // station.statusはとりあえず見なくてもおｋかな・・・？
+                'station.id' => $station_id,
+                'train.dia_group_id' => $dia_group_id,
+                'train.distance' => $distance,
+                'train.status' => 1,
+            ])
+            ->select([
+                'dia.departureTime',
+                'dia.arrivalTime',
+                'dia.type',
+                'dia.isFirstDia',
+                'train.id',
+                'train.identification_id',
+                'train.distance',
+                'train.bikou',
+                'train_type.name',
+                'train_type.shortName',
+                'train_type.timetableColor',
+                'train_type.timetableFont',
+            ])
+            ->all();
+    }
 
+    /**
+     * @param array $station_array
+     * @param string $distance
+     * @return array
+     */
     private function __getStationIdArray(array $station_array, $distance)
     {
         if ($distance === 'Nobori') {

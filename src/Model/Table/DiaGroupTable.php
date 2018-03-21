@@ -108,4 +108,21 @@ class DiaGroupTable extends Table
 
         return $this->newEntity($data);
     }
+    
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getDiaGroup($id)
+    {
+        if (empty($id)) {
+            return [];
+        }
+        
+        return $this->find()
+            ->contain('dia_file')
+            ->where(['DiaGroup.id' => $id])
+            ->last()
+            ->toArray();
+    }
 }

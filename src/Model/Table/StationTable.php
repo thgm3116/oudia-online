@@ -103,4 +103,37 @@ class StationTable extends Table
 
         return $this->newEntity($data);
     }
+    
+    /**
+     * @param int $dia_file_id
+     * @return array
+     */
+    public function getStations($dia_file_id)
+    {
+        if (empty($dia_file_id)) {
+            return [];
+        }
+        
+        return $this->find()
+            ->where(['dia_file_id' => $dia_file_id])
+            ->all()
+            ->toArray();
+    }
+    
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getStation($id)
+    {
+        if (empty($id)) {
+            return [];
+        }
+        
+        return $this->find()
+            ->where(['id' => $id])
+            ->select(['id', 'name'])
+            ->last()
+            ->toArray();
+    }
 }
