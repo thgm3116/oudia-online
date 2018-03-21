@@ -123,4 +123,38 @@ class TrainTable extends Table
 
         return $this->newEntity($data);
     }
+    
+    /**
+     * @param int $dia_group_id
+     * @param string $distance
+     * @return Train
+     */
+    public function getTrainsByDiaGroupIdAndDistance($dia_group_id, $distance)
+    {
+        if (empty($dia_group_id) || empty($distance)) {
+            return null;
+        }
+        
+        return $this->find()
+            ->contain(['dia', 'train_type'])
+            ->where(['dia_group_id' => $dia_group_id, 'distance' => $distance])
+            ->order(['Train.id ASC'])
+            ->all();
+    }
+    
+    public function getTrainTimetable($id)
+    {
+        if (empty($id)) {
+            return [];
+        }
+        
+        return $this->find()
+            ->contain([
+                'dia',
+                'train_type'
+            ])
+            ->where(['train.id' => $id])
+            ->last()
+            ->toArray();
+    }
 }

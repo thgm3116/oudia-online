@@ -1,51 +1,75 @@
-# CakePHP Application Skeleton
+# OuDia Onlineについて
+## 概要
+OuDia Onlineは、take-okm氏のOuDiaをWeb版に移植したものです。
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![License](https://img.shields.io/packagist/l/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+作者hirattiがWebフレームワークによる設計開発の勉強を目的に作ったもので、以下の仕様的な特徴があります。 
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
+* PHPとhttpdとMySQLさえ動けばどこでも動作可能
+* Composerでのワンタッチインストール
+* CakePHP3+TwitterBootstrapUIによるレスポンシブデザイン導入
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+残念ながらまだ作成段階のため編集機能及びダイヤグラムビューはありませんが、通常の時刻表ビューに加えて以下の機能が利用可能です。 
 
-## Installation
+* 各駅の駅時刻表ビュー
+* 列車ビュー
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+---
 
-If Composer is installed globally, run
+## 動作環境
+OuDia OnlineはWebサーバ内で動作します。
 
-```bash
-composer create-project --prefer-dist cakephp/app
-```
+推奨動作環境は以下のとおりです。 
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+* PHP 7.2.2
+* MariaDB 10.1.30
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
+ざっと依存性を見た感じだと、PHP7.1以降+MySQL5.6以降なら動作をすると思います。 
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+OuDia Onlineの特徴でもありますが、OSへの依存は今の所確認されていません。Windows10上のXAMPP、MacOSX(HighSierra)上のMAMP、CentOS7上のLAMPの3種類で動作を確認しています。
 
-```bash
-bin/cake server -p 8765
-```
+後述の利用許諾でも説明させていただきますが、OuDia Onlineは無保証です。動作環境に関するサポートには一切対応できません。
 
-Then visit `http://localhost:8765` to see the welcome page.
+---
 
-## Update
+## インストール方法
+インストール手順は以下の通りです(以下環境にかかわらずbashを使えるものとして説明いたします)。 
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+1. github.comからソースをcloneする
+2. ディレクトリに入ってcomposer installを実行する
+3. config/db.sqlを使ってデータベースを作成する
+4. config/app.phpの中のデータベース情報等を環境に合わせて変更する
 
-## Configuration
+config/app.phpが存在しない場合は、config/app.default.phpをコピーして作成してください(基本的にはcomposer install時に勝手に作られるはずです)。
 
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
+---
 
-## Layout
+## 使い方
+使い方は、あえて書かなくてもいいほどには直感的にわかるようになっていると思います。
 
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) (v5) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+トップページのアップロードフォームからoudファイルをアップロードすれば、次回からトップページにダイヤの一覧が表示されます。
+
+あとは各ダイヤのページに移動して・・・という感じです。
+
+※ 現状まだ未完成です。機能が追記され次第こちらにも必要に応じて追記いたします。
+
+---
+
+## 利用許諾
+OuDia Onlineは、GNU General Public License(以下『GNU GPL』)が適用されるフリーソフトウェアです。
+
+* このソフトウェアは、無保証かつ無償にて頒布いたします。
+    * そのため、このソフトウェアの作者(以下『hiratti』)は、このソフトウェアの使用・改造・再頒布等によって発生したいかなる損害に対しても責任を負いません。 
+* このソフトウェアは再頒布可能です。
+    * ただし、ソフトウェアを再頒布した場合、再頒布されたソフトウェアを受け取った人にも再頒布の自由が認められます。従って、再頒布したソフトウェアに対して、再頒布を制限するような条件を付与して再頒布することは認められません。 
+    * このソフトウェアを再頒布する場合は、改造の有無等にかかわらず、必ずソースファイルを同時に頒布する必要があります。 
+* ソフトウェアを改造した上での再頒布は可能です。
+    * ただし、改造版を世に出す場合は、その改造版にもまたGNU GPLの適用が必要です。つまり、改造版を公開するにあたって、その改造版に対しても以下の2つが必要になります
+        * ソースコードの公開
+        * ソフトウェアの再頒布の許可
+    * 従って、ソースコードを非公開としたままでの再頒布は認められません。 
+
+その他詳細については、以下のGNU GPL本文を参照してください。 
+
+* [GNU General Public License V3](https://www.gnu.org/licenses/gpl-3.0.html)
+* [GNU General Public License V3 日本語訳](https://ja.osdn.net/projects/opensource/wiki/licenses%252FGNU_General_Public_License_version_3.0)
+

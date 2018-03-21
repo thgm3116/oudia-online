@@ -15,6 +15,8 @@ class InfoController extends AppController
      */
     public function index()
     {
-
+        $this->set('title', 'Info' . self::TITLE_POSTFIX);
+        $this->set('h1', 'Info');
+        $this->set('is_dia_view_link_enabled', false);
     }
 }
