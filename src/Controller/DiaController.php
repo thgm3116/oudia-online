@@ -20,6 +20,7 @@ class DiaController extends AppController
     {
         $this->set('title', 'Diagram View' . self::TITLE_POSTFIX);
         $this->set('h1', 'Diagram View');
+        $this->set('is_dia_view_link_enabled', false);
 
         $dia_groups = TableRegistry::get('DiaGroup')->find()->contain('dia_file');
         $this->set('dia_groups', $dia_groups);
@@ -79,6 +80,7 @@ class DiaController extends AppController
 
         $this->set('title', 'Diagram View (Default)' . self::TITLE_POSTFIX);
         $this->set('h1', 'Diagram View (Default)');
+        $this->set('is_dia_view_link_enabled', false);
 
         $this->set('distance', $distance);
         $this->set('distance_japanese', $distance_japanese);
@@ -217,6 +219,7 @@ class DiaController extends AppController
 
         $this->set('title', 'Diagram View (Station)' . self::TITLE_POSTFIX);
         $this->set('h1', 'Diagram View (Station)');
+        $this->set('is_dia_view_link_enabled', true);
 
         $this->set('dia_file', $dia_group_result['dia_file']);
         $this->set('dia_group_id', $dia_group_id);
@@ -275,6 +278,7 @@ class DiaController extends AppController
 
         $this->set('title', 'Diagram View (Train)' . self::TITLE_POSTFIX);
         $this->set('h1', 'Diagram View (Train)');
+        $this->set('is_dia_view_link_enabled', true);
 
         $this->set('dia_file', $dia_group_result['dia_file']);
         $this->set('dia_group_id', $dia_group_id);
